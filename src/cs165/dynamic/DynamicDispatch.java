@@ -10,23 +10,24 @@ public class DynamicDispatch {
     public static Object dynamicallyCallMethodOnObject(String method_name, Object o, Object... arguments) {
         return helper(o.getClass(), method_name, o, arguments);
     }
+    
     private static Object helper(Class<?> c, String method_name, Object o, Object[] arguments) {
         System.out.println("Trying to find method on class: " + c);
         if (c == null) return null;
-        try {
-            for (Method m : c.getDeclaredMethods()) {
-                if (method_name.equals(m.getName()) && parameterTypesMatchArguments(m.getParameterTypes(), arguments)) {
-                    System.out.println("Found method!");
+        for (Method m : c.getDeclaredMethods()) {
+            if (method_name.equals(m.getName()) && parameterTypesMatchArguments(m.getParameterTypes(), arguments)) {
+                System.out.println("Found method!");
+                try {
                     return m.invoke(o, arguments);
+                } catch (IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                    return null;
                 }
             }
-
-            System.out.println("Didn't find method, searching upwards...");
-            return helper(c.getSuperclass(), method_name, o, arguments);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            return null;
         }
+
+        System.out.println("Didn't find method, searching upwards...");
+        return helper(c.getSuperclass(), method_name, o, arguments);
     }
 
     private static boolean parameterTypesMatchArguments(Class<?>[] parameterTypes, Object[] arguments) {
