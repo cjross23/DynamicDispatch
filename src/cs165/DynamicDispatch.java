@@ -21,27 +21,31 @@ public class DynamicDispatch {
     }
 
     public static void main(String[] args) throws NoSuchMethodException {
+        // Quick demo using the private API for clarity
+        // Other classes should use the public API (Call, On)
         log_to_err(true);
-        System.out.println((int) Call("length").on("Hello, world!").withArgs());
-        System.out.println(On("Hello, World!").call("length").withArgs());
-        System.out.println(On("Hello, World!").call("charmAt").withArgs(13));
-        System.out.println(On("Hello, World!").call("equalsIgnoreCase").withArgs("Hello, world!"));
+        String s = "hello, world!";
+        System.out.println("Length is: " + dynamicallyCallMethodOnObject("length", s));
+        System.out.println("Index of 'o' is: " + dynamicallyCallMethodOnObject("indexOf", s, 'o'));
+        System.out.println("equalsIgnoreCase(\"Hello, World!\") is: " +
+                dynamicallyCallMethodOnObject("equalsIgnoreCase", s, "Hello, World!"));
     }
-
 
     private static Object dynamicallyCallMethodOnObject(String method_name, Object o, Object... arguments)
             throws NoSuchMethodException {
-        return helper(o.getClass(), method_name, o, arguments);
+        return callMethodFromClassElseFromSuper(o.getClass(), method_name, o, arguments);
     }
 
-    private static Object helper(Class<?> c, String method_name, Object o, Object[] arguments)
+    private static Object callMethodFromClassElseFromSuper(Class<?> c, String method_name, Object o, Object[] arguments)
             throws NoSuchMethodException {
+        // REPLACE THIS COMMENT WITH YOUR CODE
         if (c == null) {
             String message = String.format("Failed to find a method for %s.%s%s", o.getClass().getName(),
                     method_name, arrayToStringWithParens(arguments));
             throw new NoSuchMethodException(message);
         }
         log(String.format("Trying to find method [%s] on class [%s]..", method_name, c.getName()));
+
         for (Method m : c.getDeclaredMethods()) {
             if (method_name.equals(m.getName())
                     && parameterTypesMatchArguments(m.getParameterTypes(), arguments)) {
@@ -59,8 +63,23 @@ public class DynamicDispatch {
             }
         }
 
-        return helper(c.getSuperclass(), method_name, o, arguments);
+        return callMethodFromClassElseFromSuper(c.getSuperclass(), method_name, o, arguments);
     }
+
+    /*
+    Error message examples:
+
+    String message = String.format("Failed to find a method for %s.%s%s", o.getClass().getName(),
+                    method_name, arrayToStringWithParens(arguments));
+
+    String.format("Trying to find method [%s] on class [%s]..", method_name, c.getName())
+
+    String.format("Found! Invoking with args %s to produce a %s.",
+                        Arrays.toString(arguments), m.getReturnType().getName())
+
+    String message = String.format("Method %s.%s%s threw:", c.getName(),
+                            method_name, arrayToStringWithParens(arguments));
+     */
 
     private static String arrayToStringWithParens(Object[] arr) {
         String args = Arrays.toString(arr);
