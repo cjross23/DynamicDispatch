@@ -29,6 +29,7 @@ public class DynamicDispatch {
         System.out.println("Index of 'o' is: " + dynamicallyCallMethodOnObject("indexOf", s, 'o'));
         System.out.println("equalsIgnoreCase(\"Hello, World!\") is: " +
                 dynamicallyCallMethodOnObject("equalsIgnoreCase", s, "Hello, World!"));
+        log_to_err(false);
     }
 
     private static Object dynamicallyCallMethodOnObject(String method_name, Object o, Object... arguments)
