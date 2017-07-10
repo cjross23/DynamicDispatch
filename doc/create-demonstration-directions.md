@@ -46,7 +46,7 @@ Now, craft your own demos:
 
 ## Conclusion
 
-You have build a mechanism for modeling and performing dynamic method dispatch in Java. You have learned how to use the API for `DynamicDispatch`. And you have demonstrated a gamut of functionality and behaviour.
+You have built a mechanism for modeling and performing dynamic method dispatch in Java. You have learned how to use the API for `DynamicDispatch`. And you have demonstrated a gamut of functionality and behaviour.
 
 ## Grading
 
