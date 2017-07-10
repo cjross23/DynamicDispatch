@@ -1,6 +1,6 @@
 # Directions for finding the appropriate method to invoke
 
-In [`DynamicDispatch.java`](src/cs165/DynamicDispatch.java) you will find a lot of working support code, but the most interesting method is left to you: `callMethodFromClassElseFromSuper`.
+In [`DynamicDispatch.java`](../src/cs165/DynamicDispatch.java) you will find a lot of working support code, but the most interesting method is left to you: `callMethodFromClassElseFromSuper`.
 
 Study `DynamicDispatch.main` to see how the method `dynamicallyCallMethodOnObject` is used. Then see how it kicks off the search by calling `callMethodFromClassElseFromSuper`, which recursively searches upwards in the class hierarchy until it finds a suitable method to invoke.
 
