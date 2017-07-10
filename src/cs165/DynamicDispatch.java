@@ -39,31 +39,7 @@ public class DynamicDispatch {
     private static Object callMethodFromClassElseFromSuper(Class<?> c, String method_name, Object o, Object[] arguments)
             throws NoSuchMethodException {
         // REPLACE THIS COMMENT WITH YOUR CODE
-        if (c == null) {
-            String message = String.format("Failed to find a method for %s.%s%s", o.getClass().getName(),
-                    method_name, arrayToStringWithParens(arguments));
-            throw new NoSuchMethodException(message);
-        }
-        log(String.format("Trying to find method [%s] on class [%s]..", method_name, c.getName()));
-
-        for (Method m : c.getDeclaredMethods()) {
-            if (method_name.equals(m.getName())
-                    && parameterTypesMatchArguments(m.getParameterTypes(), arguments)) {
-                log(String.format("Found! Invoking with args %s to produce a %s.",
-                        Arrays.toString(arguments), m.getReturnType().getName()));
-                try {
-                    return m.invoke(o, arguments);
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                } catch (InvocationTargetException e) {
-                    String message = String.format("Method %s.%s%s threw:", c.getName(),
-                            method_name, arrayToStringWithParens(arguments));
-                    throw new RuntimeException(message, e.getCause());
-                }
-            }
-        }
-
-        return callMethodFromClassElseFromSuper(c.getSuperclass(), method_name, o, arguments);
+        return null;
     }
 
     /*
